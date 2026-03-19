@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidoyGrab Pro | Best Video Downloader 2026</title>
+    <meta name="description" content="Download video Vidoy kualitas HD dengan cepat dan gratis. Tanpa iklan pop-up yang mengganggu.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: #fff; }
+        .neon-border { border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s; }
+        .neon-border:focus-within { border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
+        .shimmer { background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
+        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4">
+
+    <div class="w-full max-w-2xl space-y-10 text-center">
+        <div class="space-y-2">
+            <h1 class="text-6xl font-black tracking-tighter italic">VIDOY<span class="text-red-600">GRAB</span></h1>
+            <p class="text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase">Ultra Fast Edge Downloader</p>
+        </div>
+
+        <div class="neon-border bg-zinc-900/50 p-2 rounded-3xl flex flex-col md:flex-row gap-2 backdrop-blur-xl">
+            <input type="text" id="targetUrl" placeholder="Tempel link Vidoy di sini..." 
+                   class="flex-1 bg-transparent px-6 py-4 outline-none text-sm">
+            <button onclick="startDownload()" id="mainBtn" 
+                    class="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-4 rounded-2xl transition-all active:scale-95 uppercase text-xs tracking-widest">
+                GRAB VIDEO
+            </button>
+        </div>
+
+        <div id="statusArea" class="hidden space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500">
+            <div id="loader" class="hidden flex flex-col items-center gap-3">
+                <div class="w-8 h-8 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Bypassing security...</p>
+            </div>
+
+            <div id="resultBox" class="hidden bg-zinc-900 border border-white/5 p-8 rounded-3xl">
+                <div class="w-12 h-12 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">✓</div>
+                <h3 class="text-lg font-bold mb-1">Video Siap Diunduh!</h3>
+                <p class="text-zinc-500 text-[10px] mb-6 uppercase tracking-wider">Kualitas: Original HD (MP4)</p>
+                <a id="dlLink" href="#" target="_blank" 
+                   class="inline-block w-full bg-white text-black font-black py-4 rounded-2xl hover:bg-red-600 hover:text-white transition-all uppercase text-xs tracking-widest">
+                    Download File Sekarang
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="fixed bottom-10 text-zinc-700 text-[9px] font-bold tracking-[0.4em] uppercase">
+        Encrypted P2P Downloader Node v4.0
+    </footer>
+
+    <script>
+        async function startDownload() {
+            const url = document.getElementById('targetUrl').value;
+            const statusArea = document.getElementById('statusArea');
+            const loader = document.getElementById('loader');
+            const resultBox = document.getElementById('resultBox');
+            const btn = document.getElementById('mainBtn');
+
+            if (!url) return alert("Linknya mana bos?");
+
+            // Reset & Show Loading
+            statusArea.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            resultBox.classList.add('hidden');
+            btn.disabled = true;
+
+            try {
+                // Panggil Cloudflare Function (Relative Path)
+                const res = await fetch(`/api/grab?url=${encodeURIComponent(url)}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    document.getElementById('dlLink').href = data.downloadUrl;
+                    loader.classList.add('hidden');
+                    resultBox.classList.remove('hidden');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (err) {
+                alert("Gagal: " + err.message);
+                statusArea.classList.add('hidden');
+            } finally {
+                btn.disabled = false;
+                loader.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
