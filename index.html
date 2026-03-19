@@ -3,91 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VidoyGrab Pro | Best Video Downloader 2026</title>
-    <meta name="description" content="Download video Vidoy kualitas HD dengan cepat dan gratis. Tanpa iklan pop-up yang mengganggu.">
+    <title>VidGrab Pro | Fast & Secure Downloader</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #050505; color: #fff; }
-        .neon-border { border: 1px solid rgba(239, 68, 68, 0.2); transition: all 0.3s; }
-        .neon-border:focus-within { border-color: #ef4444; box-shadow: 0 0 20px rgba(239, 68, 68, 0.2); }
-        .shimmer { background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%); background-size: 200% 100%; animation: loading 1.5s infinite; }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #020202; color: #fff; }
+        .glass-card { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(20px); }
+        .btn-gradient { background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); }
+        .loader { border-top-color: #ef4444; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center px-4">
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
 
-    <div class="w-full max-w-2xl space-y-10 text-center">
-        <div class="space-y-2">
-            <h1 class="text-6xl font-black tracking-tighter italic">VIDOY<span class="text-red-600">GRAB</span></h1>
-            <p class="text-zinc-500 text-xs font-bold tracking-[0.3em] uppercase">Ultra Fast Edge Downloader</p>
+    <div class="w-full max-w-xl text-center space-y-10">
+        <div class="space-y-1">
+            <h1 class="text-5xl font-black italic tracking-tighter">VID<span class="text-red-600">GRAB</span></h1>
+            <p class="text-zinc-600 text-[10px] font-bold tracking-[0.5em] uppercase">Private Cloud Processing</p>
         </div>
 
-        <div class="neon-border bg-zinc-900/50 p-2 rounded-3xl flex flex-col md:flex-row gap-2 backdrop-blur-xl">
-            <input type="text" id="targetUrl" placeholder="Tempel link Vidoy di sini..." 
-                   class="flex-1 bg-transparent px-6 py-4 outline-none text-sm">
-            <button onclick="startDownload()" id="mainBtn" 
-                    class="bg-red-600 hover:bg-red-700 text-white font-black px-8 py-4 rounded-2xl transition-all active:scale-95 uppercase text-xs tracking-widest">
-                GRAB VIDEO
+        <div class="glass-card p-2 rounded-3xl flex flex-col md:flex-row gap-2 shadow-2xl">
+            <input type="text" id="targetUrl" placeholder="Tempel URL Vidoy di sini..." 
+                   class="flex-1 bg-transparent border-none px-6 py-4 text-sm focus:outline-none">
+            <button onclick="processVideo()" id="btnAction" class="btn-gradient px-8 py-4 rounded-2xl font-black text-xs tracking-widest uppercase transition-all active:scale-95">
+                UNDUH VIDEO
             </button>
         </div>
 
-        <div id="statusArea" class="hidden space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-500">
-            <div id="loader" class="hidden flex flex-col items-center gap-3">
-                <div class="w-8 h-8 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-                <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Bypassing security...</p>
+        <div id="statusBox" class="hidden glass-card p-10 rounded-3xl animate-bounce-in">
+            <div id="loadingState" class="hidden flex flex-col items-center gap-4">
+                <div class="w-10 h-10 border-4 border-zinc-800 rounded-full loader"></div>
+                <p class="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Bypassing Tokens...</p>
             </div>
 
-            <div id="resultBox" class="hidden bg-zinc-900 border border-white/5 p-8 rounded-3xl">
-                <div class="w-12 h-12 bg-green-500/20 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">✓</div>
-                <h3 class="text-lg font-bold mb-1">Video Siap Diunduh!</h3>
-                <p class="text-zinc-500 text-[10px] mb-6 uppercase tracking-wider">Kualitas: Original HD (MP4)</p>
-                <a id="dlLink" href="#" target="_blank" 
-                   class="inline-block w-full bg-white text-black font-black py-4 rounded-2xl hover:bg-red-600 hover:text-white transition-all uppercase text-xs tracking-widest">
-                    Download File Sekarang
+            <div id="resultState" class="hidden space-y-6">
+                <div class="w-14 h-14 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto text-2xl">✓</div>
+                <h3 class="font-bold text-xl uppercase tracking-tighter">Ekstraksi Berhasil</h3>
+                <a id="dlButton" href="#" target="_blank" class="block w-full bg-white text-black font-black py-4 rounded-xl hover:bg-red-600 hover:text-white transition-all text-sm uppercase tracking-widest">
+                    Simpan Video Sekarang
                 </a>
+                <p class="text-[9px] text-zinc-600 uppercase italic leading-loose">Peringatan: Link bersifat sementara. Segera unduh sebelum kedaluwarsa.</p>
             </div>
         </div>
     </div>
 
-    <footer class="fixed bottom-10 text-zinc-700 text-[9px] font-bold tracking-[0.4em] uppercase">
-        Encrypted P2P Downloader Node v4.0
+    <footer class="mt-20 text-zinc-800 text-[8px] font-black tracking-widest uppercase">
+        Infrastructure by Cloudflare Edge Runtime v5.0
     </footer>
 
     <script>
-        async function startDownload() {
+        async function processVideo() {
             const url = document.getElementById('targetUrl').value;
-            const statusArea = document.getElementById('statusArea');
-            const loader = document.getElementById('loader');
-            const resultBox = document.getElementById('resultBox');
-            const btn = document.getElementById('mainBtn');
+            const statusBox = document.getElementById('statusBox');
+            const loadingState = document.getElementById('loadingState');
+            const resultState = document.getElementById('resultState');
+            const btn = document.getElementById('btnAction');
 
-            if (!url) return alert("Linknya mana bos?");
+            if (!url) return alert("URL ga boleh kosong!");
 
-            // Reset & Show Loading
-            statusArea.classList.remove('hidden');
-            loader.classList.remove('hidden');
-            resultBox.classList.add('hidden');
+            // UI Reset
             btn.disabled = true;
+            statusBox.classList.remove('hidden');
+            loadingState.classList.remove('hidden');
+            resultState.classList.add('hidden');
 
             try {
-                // Panggil Cloudflare Function (Relative Path)
+                // Fetch ke API Cloudflare Functions
                 const res = await fetch(`/api/grab?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
+                
+                // Handling Unexpected end of JSON input
+                const text = await res.text();
+                let data;
+                
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    console.error("Respon bukan JSON:", text);
+                    throw new Error("Server ngirim data rusak atau diblokir Vidoy.");
+                }
 
                 if (data.success) {
-                    document.getElementById('dlLink').href = data.downloadUrl;
-                    loader.classList.add('hidden');
-                    resultBox.classList.remove('hidden');
+                    document.getElementById('dlButton').href = data.downloadUrl;
+                    loadingState.classList.add('hidden');
+                    resultState.classList.remove('hidden');
                 } else {
                     throw new Error(data.error);
                 }
+
             } catch (err) {
-                alert("Gagal: " + err.message);
-                statusArea.classList.add('hidden');
+                alert("ERROR: " + err.message);
+                statusBox.classList.add('hidden');
             } finally {
                 btn.disabled = false;
-                loader.classList.add('hidden');
             }
         }
     </script>
